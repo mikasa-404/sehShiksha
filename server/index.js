@@ -8,6 +8,8 @@ import morgan from "morgan"
 import path from "path" //module to work with directoy paths
 import { fileURLToPath } from "url"//convert file URLs to file paths
 
+import authRoutes from "./routes/auth.js"
+
 
 //configurations
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +30,8 @@ app.use(bodyParser.json({limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}));
 
 app.use(cors());
+
+app.use('/auth', authRoutes)
 
 const PORT = process.env.PORT || 6001;
 mongoose
