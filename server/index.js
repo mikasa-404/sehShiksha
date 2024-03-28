@@ -7,11 +7,15 @@ import morgan from "morgan"
 import path from "path" //module to work with directoy paths
 import { fileURLToPath } from "url"//convert file URLs to file paths
 import { register } from "./controllers/auth.js"
+import { verifyToken } from "./middlewares/auth.js"
 import multer from "multer"
 import bodyParser from "body-parser"
+import { createPost } from "./controllers/posts.js"
 
 
 import authRoutes from "./routes/auth.js"
+import postRoutes from "./routes/posts.js"
+import forumRoutes from "./routes/forum.js"
 
 
 //configurations
@@ -48,7 +52,10 @@ const storage= multer.diskStorage({
 const upload=multer({storage});
 //user route
 app.post("/auth/register",upload.single("picture"),register);
-app.use('/auth', authRoutes)
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.use('/auth', authRoutes);
+app.use("/posts", postRoutes);
+app.use("/forum", forumRoutes );
 
 const PORT = process.env.PORT || 3001;
 mongoose

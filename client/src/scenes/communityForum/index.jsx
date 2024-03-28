@@ -1,12 +1,10 @@
 import { Box } from "@mui/material";
-import WidgetWrapper from "components/WidgetWrapper";
-import UserWidget from "../../components/UserWidget";
 import React from "react";
+import UserWidget from "components/UserWidget";
 import Navbar from "scenes/navbar";
-import Posts from "./Posts";
-import CreatePost from "./CreatePost";
+import MyQuestion from "./MyQuestion";
 
-const Dashboard = () => {
+const CommunityForum = () => {
   return (
     <Box>
       <Navbar />
@@ -20,12 +18,11 @@ const Dashboard = () => {
       >
         <UserWidget />
         <Box display="flex" flexDirection="column" width="80%" gap="1.5rem">
-          <CreatePost />
-          <Posts />
+          <MyQuestion/>
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default Dashboard;
+export default CommunityForum;
