@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import CommunityForum from "scenes/communityForum";
+import QuestionPage from "scenes/questionPage";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route path="/home" element={isAuth? <Dashboard />: <Navigate to="/"/>} />
             <Route path="/forum" element={isAuth? <CommunityForum />: <Navigate to="/"/>} />
+            <Route path="/forum/:quesId" element={isAuth? < QuestionPage/>: <Navigate to="/"/>} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

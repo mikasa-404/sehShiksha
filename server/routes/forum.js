@@ -1,6 +1,13 @@
 import express from "express";
 const router= express.Router();
 import { verifyToken } from "../middlewares/auth.js";
-import { getAllQuestion } from "../controllers/forum.js";
+import { addQuestion, getAllQuestion, getQuestion } from "../controllers/forum.js";
+import { getAllReplies, getNestedReplies, postNesReply, postReply } from "../controllers/question.js";
 router.get("/", getAllQuestion);
+router.get("/:quesId",getQuestion);
+router.post("/", addQuestion);
+router.post("/:quesId", postReply);
+router.get("/:quesId/replies", getAllReplies);
+router.post("/reply/:replyId", postNesReply);
+router.get("/reply/:replyId", getNestedReplies);
 export default router;

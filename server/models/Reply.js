@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-const questionSchema = new mongoose.Schema(
+const ReplySchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -16,10 +15,14 @@ const questionSchema = new mongoose.Schema(
       required: true,
     },
     userPicturePath: String,
-
-    title: {
-      type: String,
+    questionID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Question", // Reference to the Question model
       required: true,
+    },
+    replyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reply", // For nested replies, reference to the parent reply
     },
     content: {
       type: String,
@@ -34,6 +37,5 @@ const questionSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-const Question = mongoose.model("question", questionSchema);
-export default Question;
+const Reply= mongoose.model("reply", ReplySchema);
+export default Reply;

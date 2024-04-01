@@ -1,15 +1,17 @@
 import React from "react";
 import WidgetWrapper from "./WidgetWrapper";
 import { useSelector } from "react-redux";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography,useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const UserWidget = () => {
   const { firstName, lastName, email, picturePath, department } = useSelector(
     (state) => state.user
   );
+  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+
   return (
-    <WidgetWrapper width="25%">
+    <WidgetWrapper width={isNonMobileScreens?"25%":"100%"}>
       <Box
         display="flex"
         flexDirection="column"
