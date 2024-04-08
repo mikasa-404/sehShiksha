@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state/authSlice.js";
 import { Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import Post from "./Post";
 
 
 
@@ -27,10 +28,9 @@ const Posts = () => {
     <Box sx={{ display: "flex", justifyContent: "center" }}>
      <CircularProgress />
     </Box>
-  ) : (
-    <WidgetWrapper>
-      {posts.map((post)=><Box>{post.description}</Box>)}
-    </WidgetWrapper>);
+  ) : (<>
+        {posts.map((post)=><Box><Post post={post}/></Box>)}
+</>)
 }
 
 

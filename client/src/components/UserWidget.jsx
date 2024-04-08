@@ -1,17 +1,20 @@
 import React from "react";
 import WidgetWrapper from "./WidgetWrapper";
 import { useSelector } from "react-redux";
-import { Box, Typography,useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const UserWidget = () => {
   const { firstName, lastName, email, picturePath, department } = useSelector(
     (state) => state.user
   );
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
 
   return (
-    <WidgetWrapper width={isNonMobileScreens?"25%":"100%"}>
+    <WidgetWrapper
+      width={isNonMobileScreens ? "25%" : "100%"}
+      height="fit-content"
+    >
       <Box
         display="flex"
         flexDirection="column"
@@ -61,34 +64,60 @@ const UserWidget = () => {
           width="100%"
           textAlign="left"
           fontWeight="400"
-          color="neutral.dark"
           px={2}
           display="flex"
           flexDirection="column"
           gap="0.5rem"
+          // borderBottom="2px solid"
+          // borderColor={"primary.dark"}
+          pb="1.2rem"
         >
-          <Link to="/home">
+          <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}>
             <Typography
               variant="h4"
               borderBottom="2px solid"
               borderColor={"primary.dark"}
               fontWeight={"500"}
-              color="primary.main"
+              fontSize="1.2em"
             >
               Home
             </Typography>
           </Link>
-          <Link to="/resources">
+          <Link
+            to="/resources"
+            style={{ textDecoration: "none", color: "inherit"}}
+          >
             <Typography
+              variant="h4"
               borderBottom="2px solid"
               borderColor={"primary.dark"}
-              variant="h4"
+              fontSize="1.2em"
             >
               Resource Hub
             </Typography>
           </Link>
-          <Link to="/forum">
-            <Typography variant="h4">Commuity Forum</Typography>
+          <Link
+            to="/forum"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography
+              variant="h4"
+              borderBottom="2px solid"
+              borderColor={"primary.dark"}
+              fontSize="1.2em"
+            >
+              Commuity Forum
+            </Typography>
+          </Link>
+          <Link to="" style={{ textDecoration: "none", color: "inherit" }}>
+            <Typography
+              variant="h4"
+              borderBottom="2px solid"
+              borderColor={"primary.dark"}
+              fontSize="1.2em"
+            >
+              Contact Us
+            </Typography>
           </Link>
         </Box>
       </Box>

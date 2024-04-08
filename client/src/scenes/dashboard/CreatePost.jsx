@@ -12,7 +12,7 @@ const CreatePost = () => {
   const [isImage, setIsImage] = useState(true); //iamge icon cicked
   const [image, setImage] = useState(null);
   const [des, setDes] = useState(""); //POST DESCRIPTION
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
   const dispatch = useDispatch();
   const handlePost = async () => {
     const formData = new FormData();
@@ -41,6 +41,7 @@ const CreatePost = () => {
   };
   return (
     <WidgetWrapper>
+    
       <Input
         placeholder="What's on your mind..."
         onChange={(e) => setDes(e.target.value)}
@@ -89,11 +90,7 @@ const CreatePost = () => {
         </Box>
       )}
 
-      <Button
-        disabled={!des}
-        onClick={handlePost}
-        variant="contained"
-      >
+      <Button disabled={!des} onClick={handlePost} variant="contained">
         POST
       </Button>
     </WidgetWrapper>

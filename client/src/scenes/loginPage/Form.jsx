@@ -8,6 +8,7 @@ import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin } from "state/authSlice";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -36,6 +37,10 @@ const initialValuesLogin = {
 };
 const Form = () => {
   const [pageType, setPageType] = useState("register");
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
   const dispatch = useDispatch();
@@ -43,16 +48,15 @@ const Form = () => {
 
   const [spinner, setSpinner] = useState(false);
 
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const isNonMobile = useMediaQuery("(min-width:900px)");
   const register = async (values, onSubmitProps) => {
     try {
-
       const formData = new FormData();
       for (let value in values) {
         formData.append(value, values[value]);
       }
       formData.append("picturePath", values.picture.name);
-      
+
       const savedUserResponse = await fetch("auth/register", {
         method: "POST",
         body: formData,
@@ -121,8 +125,8 @@ const Form = () => {
       }) => (
         <form onSubmit={handleSubmit}>
           {
-            <Box>
-              <Typography variant="h1" fontWeight={"400"}>
+            <Box my="2rem">
+              <Typography fontWeight={"500"} fontSize="2rem">
                 {isRegister
                   ? "Create new account. "
                   : "Sign into your account."}
@@ -246,10 +250,14 @@ const Form = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               name="password"
+              type={showPassword ? 'text' : 'password'}
               sx={{ gridColumn: "span 4" }}
               error={Boolean(touched.firstName) && Boolean(errors.firstName)}
               helperText={touched.firstName && errors.firstName}
             />
+            <Button onClick={()=>togglePasswordVisibility()}
+            sx={{height: "2rem"}}
+            >{showPassword ? <span> <FaEyeSlash /> </span>: <FaEye />}</Button>
           </Box>
           <Box>
             <Button
