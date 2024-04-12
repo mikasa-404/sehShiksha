@@ -7,48 +7,30 @@ import Posts from "./Posts";
 import CreatePost from "./CreatePost";
 import { useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
+import SideWidget from "../../components/SideWidget";
 
 const Dashboard = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
-  const user= useSelector((state)=>state.user)
+  const user = useSelector((state) => state.user);
 
   return (
-    <Box>
-      <Navbar />
+    <Box display="flex" flexDirection="column" gap="1.5rem">
       <Box
         display="flex"
-        gap="1.5rem"
-        sx={{
-          padding: "1.5rem 1.5rem 0.75rem 1.5rem",
-        }}
-        marginX={isNonMobileScreens ? "8rem" : "0"}
-        flexDirection={isNonMobileScreens ? "row" : "column"}
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
       >
-        <UserWidget />
-        <Box
-          display="flex"
-          flexDirection="column"
-          width={isNonMobileScreens ? "80%" : "100%"}
-          gap="1.5rem"
-        >
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Typography fontSize="1rem" fontWeight="500">
-              Hi {user.firstName}! 👋
-            </Typography>
-            <Typography color="primary.dark">
-              From Updates to Opportunities: Discover it All on Our Communal
-              Dashboard! 
-            </Typography>
-          </Box>
-          <CreatePost />
-          <Posts />
-        </Box>
+        <Typography fontSize="1rem" fontWeight="500">
+          Hi {user.firstName}! 👋
+        </Typography>
+        <Typography color="primary.dark">
+          From Updates to Opportunities: Discover it All on Our Communal
+          Dashboard!
+        </Typography>
       </Box>
+      <CreatePost />
+      <Posts />
     </Box>
   );
 };

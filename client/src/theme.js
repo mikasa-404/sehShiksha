@@ -67,7 +67,7 @@ export const colorTokens = {
               },
               background: {
                 default:  colorTokens.primary[50],
-                alt: colorTokens.grey[50],
+                alt: colorTokens.grey[0],
               },
             }),
       },

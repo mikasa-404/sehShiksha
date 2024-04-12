@@ -18,6 +18,7 @@ import authReducer from "./state/authSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 
+
 //redux-persist setup
 const persistConfig = { key: "root", storage, version: 1 };
 const persistedReducer = persistReducer(persistConfig, authReducer);

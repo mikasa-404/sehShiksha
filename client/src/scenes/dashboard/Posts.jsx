@@ -24,7 +24,7 @@ const Posts = () => {
   useEffect(()=>{
     getPosts();
   },[]);
-  return posts.length == 0 ? (
+  return posts.length === 0 ? (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
      <CircularProgress />
     </Box>

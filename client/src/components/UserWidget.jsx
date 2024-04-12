@@ -12,7 +12,6 @@ const UserWidget = () => {
 
   return (
     <WidgetWrapper
-      width={isNonMobileScreens ? "25%" : "100%"}
       height="fit-content"
     >
       <Box
@@ -54,10 +53,13 @@ const UserWidget = () => {
               py={0.5}
               borderRadius={10}
               fontSize={"small"}
+              textAlign="center"
             >
               {department}
             </Box>
-            <Box fontSize={"small"}>{email}</Box>
+            <Box fontSize={"small"} textAlign="center">
+              {email}
+            </Box>
           </Box>
         </Box>
         <Box
@@ -68,8 +70,6 @@ const UserWidget = () => {
           display="flex"
           flexDirection="column"
           gap="0.5rem"
-          // borderBottom="2px solid"
-          // borderColor={"primary.dark"}
           pb="1.2rem"
         >
           <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}>
@@ -85,7 +85,7 @@ const UserWidget = () => {
           </Link>
           <Link
             to="/resources"
-            style={{ textDecoration: "none", color: "inherit"}}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <Typography
               variant="h4"
@@ -106,7 +106,7 @@ const UserWidget = () => {
               borderColor={"primary.dark"}
               fontSize="1.2em"
             >
-              Commuity Forum
+              Community Forum
             </Typography>
           </Link>
           <Link to="" style={{ textDecoration: "none", color: "inherit" }}>
