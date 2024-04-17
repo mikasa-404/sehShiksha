@@ -51,13 +51,11 @@ export const postNesReply = async (req, res) => {
       { $push: { replies: newReply._id } },
       { new: true }
     );
-    res
-      .status(201)
-      .json({
-        message: "Reply created successfully",
-        reply: newReply,
-        parent: parentReply,
-      });
+    res.status(201).json({
+      message: "Reply created successfully",
+      reply: newReply,
+      parent: parentReply,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -76,7 +74,10 @@ export const getNestedReplies = async (req, res) => {
 export const getAllReplies = async (req, res) => {
   try {
     const quesId = req.params.quesId;
-    const replies = await Reply.find({ questionID: quesId }).sort({
+    const replies = await Reply.find({
+      questionID: quesId,
+      replyId: { $exists: false },
+    }).sort({
       createdAt: -1,
     });
     res.status(200).json({ replies });

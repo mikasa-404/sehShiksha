@@ -1,8 +1,9 @@
-import { Button, Input } from "@mui/material";
+import { Box, Button, Input, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Reply from "./Reply";
+import WidgetWrapper from "components/WidgetWrapper";
 
 const QuestionPage = () => {
   const [questionInfo, setQuestionInfo] = useState(null);
@@ -63,17 +64,49 @@ const QuestionPage = () => {
 
   return (
     <div>
-      {questionInfo && <h1>{questionInfo.title}</h1>}
-      <Input
-        onChange={(e) => setReply(e.target.value)}
-        value={reply}
-        placeholder="Post Your reply"
-      />
-      <Button onClick={() => handlePost()}>Post</Button>
-      <h1>Comments</h1>
+      <WidgetWrapper>
+        {questionInfo && (
+          <Box display="flex" flexDirection="column">
+            <Box display="flex" gap="0.5rem" alignItems="center">
+              <img
+                style={{ objectFit: "cover", borderRadius: "50%" }}
+                width={"30px"}
+                height={"30px"}
+                alt="user"
+                src={`/assets/${questionInfo?.userPicturePath}`}
+              />
+              <Box>
+                <Typography fontWeight="500">
+                  {questionInfo?.firstName + " " + questionInfo?.lastName}
+                </Typography>
+              </Box>
+            </Box>
 
-      {/* Display replies content */}
-      {replies && replies.map((reply) => <Reply reply={reply} key={reply._id} />)}
+            <Typography fontSize="1.5rem" fontWeight="600">
+              {questionInfo?.title}
+            </Typography>
+
+            <Box mt="1rem">{questionInfo?.content}</Box>
+            <Box width="100%" display="flex" gap="0.5rem" mt="1rem">
+              <TextField
+                onChange={(e) => setReply(e.target.value)}
+                value={reply}
+                placeholder="Leave your thoughts here"
+                multiline
+                variant="filled"
+                style={{
+                  width:"100%",
+                }}
+              />
+              <Button onClick={() => handlePost()}>Post</Button>
+            </Box>
+          </Box>
+        )}
+      </WidgetWrapper>
+      <Box mt="1rem">
+        {replies &&
+          replies.map((reply) => <Reply reply={reply} key={reply._id} />)}
+      </Box>
     </div>
   );
 };

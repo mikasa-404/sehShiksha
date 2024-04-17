@@ -12,6 +12,7 @@ import Navbar from "scenes/navbar";
 import { useMediaQuery } from "@mui/material";
 import UserWidget from "components/UserWidget";
 import SideWidget from "components/SideWidget";
+import ResourceHub from "scenes/resouceHub";
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -24,24 +25,28 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Navbar />
+          {isAuth && <Navbar />}
           <Box
             display="flex"
-            mx={isNonMobileScreens? "6rem":"0"}
-            sx={{
-              padding: "1.5rem 1.5rem 0.75rem 1.5rem",
-            }}
             flexDirection={isNonMobileScreens ? "row" : "column"}
-            justifyContent={"space-between"}
+            justifyContent={"center"}
             gap={"1.5rem"}
+            width="100%"
           >
-            <Box width={isNonMobileScreens ? "20%" : "100%"}>
-              <UserWidget />
-            </Box>
+            {/* Conditionally render UserWidget and SideWidget based on route and screen size */}
+            {isAuth && (
+              <Box width={isNonMobileScreens ? "25%" : "100%"} ml="6rem">
+                <UserWidget />
+              </Box>
+            )}
 
-            <Box width={isNonMobileScreens ? "50%" : "100%"}>
+            <Box width={isNonMobileScreens ? "80%" : "100%"}>
               <Routes>
-                <Route path="/" element={<LoginPage />} />
+                {/* Redirect to /home if authenticated */}
+                <Route
+                  path="/"
+                  element={isAuth ? <Navigate to="/home" /> : <LoginPage />}
+                />
                 <Route
                   path="/home"
                   element={isAuth ? <Dashboard /> : <Navigate to="/" />}
@@ -54,11 +59,18 @@ function App() {
                   path="/forum/:quesId"
                   element={isAuth ? <QuestionPage /> : <Navigate to="/" />}
                 />
+                <Route
+                  path="/resources"
+                  element={isAuth ? <ResourceHub /> : <Navigate to="/" />}
+                />
               </Routes>
             </Box>
-            <Box display={isNonMobileScreens ? "block" : "none"}>
-              <SideWidget />
-            </Box>
+
+            {isAuth && (
+              <Box display={isNonMobileScreens ? "block" : "none"} width="25%" mr="6rem">
+                <SideWidget />
+              </Box>
+            )}
           </Box>
         </ThemeProvider>
       </BrowserRouter>

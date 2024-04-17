@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Paper, Grid, Avatar, Button, Input } from "@mui/material";
+import {
+  Paper,
+  Grid,
+  Avatar,
+  Button,
+  Input,
+  Box,
+  TextField,
+} from "@mui/material";
 import { useSelector } from "react-redux";
+import WidgetWrapper from "components/WidgetWrapper";
 const Reply = ({ reply }) => {
   const {
     createdAt,
@@ -36,9 +45,9 @@ const Reply = ({ reply }) => {
       console.error(error);
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     getNestedReplies();
-  },[]);
+  }, []);
 
   const handleReplyPost = async () => {
     const res = await fetch(`/forum/reply/${_id}`, {
@@ -57,7 +66,7 @@ const Reply = ({ reply }) => {
   };
 
   return (
-    <Paper style={{ padding: "40px 20px" }}>
+    <WidgetWrapper>
       <Grid container wrap="nowrap" spacing={2}>
         <Grid item>
           <Avatar src={`/assets/${userPicturePath}`} />
@@ -70,27 +79,36 @@ const Reply = ({ reply }) => {
           <p style={{ textAlign: "left", color: "gray" }}>
             Posted {timeDifferenceMinutes} ago.
           </p>
-          <Button onClick={() => setIsReplies(!isReplies)}>Reply</Button>
+          <Button onClick={() => setIsReplies(!isReplies)}>Show Replies</Button>
           {isReplies && (
             <div>
-              <Input
-                onChange={(e) => setNesReply(e.target.value)}
-                value={nesReply}
-                placeholder="Post Your reply"
-              />
-              <Button
-                onClick={() => {
-                  handleReplyPost();
-                }}
-              >
-                Post Reply
-              </Button>
-              {replies && replies.map((reply) => <Reply reply={reply} key={reply._id} />)}
+              <Box width="100%" display="flex" gap="0.5rem">
+                <TextField
+                  onChange={(e) => setNesReply(e.target.value)}
+                  value={nesReply}
+                  placeholder="Post Your reply"
+                  multiline
+                  style={{
+                    width: "100%",
+                  }}
+                  variant="filled"
+                />
+                <Button
+                  onClick={() => {
+                    handleReplyPost();
+                  }}
+                >
+                  Reply
+                </Button>
+              </Box>
+
+              {replies &&
+                replies.map((reply) => <Reply reply={reply} key={reply._id} />)}
             </div>
           )}
         </Grid>
       </Grid>
-    </Paper>
+    </WidgetWrapper>
   );
 };
 

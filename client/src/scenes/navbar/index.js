@@ -17,16 +17,14 @@ const Navbar = () => {
       padding="0.5rem 8rem"
       backgroundColor={alt}
       display="flex"
+      mb="1.5rem"
       justifyContent="space-between"
       sx={{
         boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)"
+        
 
       }}
-      // alignItems="center"
-      // position="fixed"
-      // top="0"
-      // left="0"
-      // right="0"
+    
     >
       {/* <Typography fontSize='2em' fontWeight='400'>Seh<span>Shiksha</span></Typography> */}
       <Typography fontSize="1.5rem" fontWeight="500" alignItems="center" display="flex" gap="0.5rem">

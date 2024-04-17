@@ -23,6 +23,8 @@ const SideWidget = () => {
         </ListItem>
         <ListItem> 
         <ListItemText> Emoji picker</ListItemText> </ListItem>
+        <ListItem> 
+        <ListItemText> Tags and filter by tags in community Forum</ListItemText> </ListItem>
       </List>
     </WidgetWrapper>
   );

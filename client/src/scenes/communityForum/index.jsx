@@ -10,12 +10,7 @@ const CommunityForum = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap="1.5rem"
-    >
-    
+    <Box display="flex" flexDirection="column" gap="1.5rem">
       <MyQuestion />
       <Questions />
     </Box>

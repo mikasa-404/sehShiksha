@@ -2,7 +2,6 @@ import WidgetWrapper from "components/WidgetWrapper";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Input,
   useMediaQuery,
   Box,
   Typography,
@@ -23,7 +22,7 @@ const CreatePost = () => {
   const [isImage, setIsImage] = useState(false); //iamge icon cicked
   const [image, setImage] = useState(null);
   const [des, setDes] = useState(""); //POST DESCRIPTION
-  const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
+  // const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
   const dispatch = useDispatch();
   const handlePost = async () => {
     const formData = new FormData();
