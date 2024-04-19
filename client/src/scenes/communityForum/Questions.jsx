@@ -3,13 +3,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuestions } from "state/authSlice";
 import { QuestionCard } from "./QuestionCard";
+import baseUrl from "config";
 
 const Questions = () => {
   // const token = useSelector((state) => state.token);
   const dispatch = useDispatch();
   const questions = useSelector((state) => state.questions);
   const getQuestions = async () => {
-    const res = await fetch("forum", {
+    const res = await fetch(`${baseUrl}/forum`, {
       method: "GET",
     });
     const data = await res.json();

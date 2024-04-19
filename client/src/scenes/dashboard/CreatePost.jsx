@@ -12,6 +12,7 @@ import { setPosts } from "state/authSlice.js";
 import Dropzone from "react-dropzone";
 import { DeleteOutlined, EditOutlined } from "@mui/icons-material";
 import { GrGallery } from "react-icons/gr";
+import baseUrl from "config";
 // import { Picker } from "emoji-mart";
 
 const CreatePost = () => {
@@ -32,7 +33,7 @@ const CreatePost = () => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-    const res = await fetch("posts", {
+    const res = await fetch(`${baseUrl}/posts`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -79,7 +80,7 @@ const CreatePost = () => {
                 <Box>
                   <Box>
                     <div {...getRootProps()}>
-                      <input {...getInputProps()} />
+                      <input {...getInputProps()} type="file" accept="image/*"/>
                       {!image ? (
                         <>
                           <Typography>Add picture here!</Typography>

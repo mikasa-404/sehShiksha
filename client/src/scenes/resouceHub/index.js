@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { pdfjs } from "react-pdf";
 import PdfComp from "./PdfComp";
+import baseUrl from "config";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -23,7 +24,7 @@ const ResourceHub = () => {
   }, []);
 
   const getPdf = async () => {
-    const res = await fetch("get-files", {
+    const res = await fetch(`${baseUrl}/get-files`, {
       method: "GET",
     });
     const data = await res.json();
@@ -31,7 +32,7 @@ const ResourceHub = () => {
   };
   const ShowPdf=(pdf)=>{
 
-    setPdfFile(`/assets/${pdf}`)
+    setPdfFile(`${baseUrl}/assets/${pdf}`)
 
   }
   const submitImage = async (e) => {
@@ -39,7 +40,7 @@ const ResourceHub = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("file", file);
-    const res = await fetch("upload-files", {
+    const res = await fetch(`${baseUrl}/upload-files`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

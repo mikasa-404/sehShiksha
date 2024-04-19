@@ -3,15 +3,17 @@ import WidgetWrapper from "components/WidgetWrapper";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuestions } from "state/authSlice";
+import baseUrl from "config";
 
 const MyQuestion = () => {
   const { _id } = useSelector((state) => state.user);
+  console.log(baseUrl)
   const [title, setTitle] = useState("");
   const [des, setDes] = useState("");
 
   const dispatch = useDispatch();
   const handlePost = async () => {
-    const res = await fetch("forum", {
+    const res = await fetch(`${baseUrl}/forum`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -3,6 +3,7 @@ import WidgetWrapper from "./WidgetWrapper";
 import { useSelector } from "react-redux";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
+import baseUrl from "config";
 
 const UserWidget = () => {
   const { firstName, lastName, email, picturePath, department } = useSelector(
@@ -35,7 +36,7 @@ const UserWidget = () => {
             width={"70px"}
             height={"70px"}
             alt="user"
-            src={`/assets/${picturePath}`}
+            src={`${baseUrl}/assets/${picturePath}`}
           />
           <Box
             display="flex"

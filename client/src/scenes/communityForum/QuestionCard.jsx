@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
+import baseUrl from "config";
 import React from "react";
 import { RiArrowDropRightLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ export const QuestionCard = ({ques}) => {
                 width={"40px"}
                 height={"40px"}
                 alt="user"
-                src={`/assets/${userPicturePath}`}
+                src={`${baseUrl}/assets/${userPicturePath}`}
               />
             </Box>
             <Box ml="1rem">

@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import WidgetWrapper from "components/WidgetWrapper";
+import baseUrl from "config";
 const Reply = ({ reply }) => {
   const {
     createdAt,
@@ -35,7 +36,7 @@ const Reply = ({ reply }) => {
 
   const getNestedReplies = async () => {
     try {
-      const res = await fetch(`/forum/reply/${_id}`);
+      const res = await fetch(`${baseUrl}/forum/reply/${_id}`);
       if (!res.ok) {
         throw new Error("Failed to fetch question information");
       }
@@ -50,7 +51,7 @@ const Reply = ({ reply }) => {
   }, []);
 
   const handleReplyPost = async () => {
-    const res = await fetch(`/forum/reply/${_id}`, {
+    const res = await fetch(`${baseUrl}/forum/reply/${_id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -69,7 +70,7 @@ const Reply = ({ reply }) => {
     <WidgetWrapper>
       <Grid container wrap="nowrap" spacing={2}>
         <Grid item>
-          <Avatar src={`/assets/${userPicturePath}`} />
+          <Avatar src={`${baseUrl}/assets/${userPicturePath}`} />
         </Grid>
         <Grid justifyContent="left" item xs zeroMinWidth>
           <h4 style={{ margin: 0, textAlign: "left" }}>

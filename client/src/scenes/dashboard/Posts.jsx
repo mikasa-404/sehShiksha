@@ -5,6 +5,7 @@ import { setPosts } from "state/authSlice.js";
 import { Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Post from "./Post";
+import baseUrl from "config";
 
 
 
@@ -13,7 +14,7 @@ const Posts = () => {
   const token = useSelector((state) => state.token);
   const dispatch=useDispatch();
   const getPosts = async () => {
-    const res = await fetch("posts", {
+    const res = await fetch(`${baseUrl}/posts`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

@@ -1,5 +1,6 @@
 import { Typography, Box, Button, Menu, MenuItem, Select } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
+import baseUrl from "config";
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -30,7 +31,7 @@ const Post = ({ post }) => {
               width={"30px"}
               height={"30px"}
               alt="user"
-              src={`/assets/${userPicturePath}`}
+              src={`${baseUrl}/assets/${userPicturePath}`}
             />
             <Box>
               <Typography fontWeight="500">
@@ -57,7 +58,7 @@ const Post = ({ post }) => {
               alt="post"
               width="100%"
               height="auto"
-              src={`/assets/${picturePath}`}
+              src={`${baseUrl}/assets/${picturePath}`}
             />
           </Box>
         )}

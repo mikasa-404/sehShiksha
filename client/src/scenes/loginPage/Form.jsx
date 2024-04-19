@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLogin } from "state/authSlice";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import baseUrl from "config";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -57,7 +58,7 @@ const Form = () => {
       }
       formData.append("picturePath", values.picture.name);
 
-      const savedUserResponse = await fetch("auth/register", {
+      const savedUserResponse = await fetch(`${baseUrl}/auth/register`, {
         method: "POST",
         body: formData,
       });
@@ -77,7 +78,7 @@ const Form = () => {
 
   const login = async (values, onSubmitProps) => {
     try {
-      const loggedInResponse = await fetch("auth/login", {
+      const loggedInResponse = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

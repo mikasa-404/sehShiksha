@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Reply from "./Reply";
 import WidgetWrapper from "components/WidgetWrapper";
+import baseUrl from "config";
 
 const QuestionPage = () => {
   const [questionInfo, setQuestionInfo] = useState(null);
@@ -14,7 +15,7 @@ const QuestionPage = () => {
 
   const getQuesInfo = async () => {
     try {
-      const res = await fetch(`/forum/${quesId}`);
+      const res = await fetch(`${baseUrl}/forum/${quesId}`);
       if (!res.ok) {
         throw new Error("Failed to fetch question information");
       }
@@ -27,7 +28,7 @@ const QuestionPage = () => {
 
   const getReplies = async () => {
     try {
-      const res = await fetch(`/forum/${quesId}/replies`);
+      const res = await fetch(`${baseUrl}/forum/${quesId}/replies`);
       if (!res.ok) {
         throw new Error("Failed to fetch question information");
       }
@@ -40,7 +41,7 @@ const QuestionPage = () => {
 
   const handlePost = async () => {
     try {
-      const res = await fetch(`/forum/${quesId}`, {
+      const res = await fetch(`${baseUrl}/forum/${quesId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -73,7 +74,7 @@ const QuestionPage = () => {
                 width={"30px"}
                 height={"30px"}
                 alt="user"
-                src={`/assets/${questionInfo?.userPicturePath}`}
+                src={`${baseUrl}/assets/${questionInfo?.userPicturePath}`}
               />
               <Box>
                 <Typography fontWeight="500">
