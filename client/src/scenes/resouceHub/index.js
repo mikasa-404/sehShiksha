@@ -15,6 +15,8 @@ const ResourceHub = () => {
   const [file, setFile] = useState("");
   const token = useSelector((state) => state.token);
   const [allFiles, setAllFiles] = useState([]);
+  const [pdfFile, setPdfFile]=useState(null)
+
 
   useEffect(() => {
     getPdf();
@@ -27,7 +29,11 @@ const ResourceHub = () => {
     const data = await res.json();
     setAllFiles(data.data);
   };
+  const ShowPdf=(pdf)=>{
 
+    setPdfFile(`/assets/${pdf}`)
+
+  }
   const submitImage = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -49,7 +55,8 @@ const ResourceHub = () => {
     }
   };
 
-  
+  console.log(allFiles)
+
   return (
     <WidgetWrapper>
       <Typography>Preview and share study materials! </Typography>
@@ -75,18 +82,18 @@ const ResourceHub = () => {
       </form>
       <Box>
         <h4>Uploaded PDF:</h4>
-        <Box display="flex" overflowX="scroll" gap="1rem">
+        <Box display="flex" gap="1rem">
           {allFiles === null
             ? ""
             : allFiles.map((data) => (
                 <Box border="gray 1px solid" borderRadius="10px">
                   <h6>{data.title}</h6>
-                  <Button variant="contained">Show Pdf</Button>
+                  <Button variant="contained" onClick={()=>ShowPdf(data.pdf)}>Show Pdf</Button>
                 </Box>
               ))}
         </Box>
       </Box>
-      <PdfComp/>
+      <PdfComp pdfFile={pdfFile}/>
     </WidgetWrapper>
   );
 };
