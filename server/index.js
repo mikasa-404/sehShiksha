@@ -68,7 +68,7 @@ app.post("/upload-files", upload.single("file"), async (req, res) => {
 });
 app.get("/get-files", async(req,res)=>{
   try {
-    PdfDetails.find({}).then((data) => {
+    PdfDetails.find({}).sort({ createdAt: -1 }).then((data) => {
       res.send({ status: "ok", data: data });
     });
   } catch (error) {

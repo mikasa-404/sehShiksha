@@ -1,14 +1,15 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Input, TextField, Typography } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { pdfjs } from "react-pdf";
 import PdfComp from "./PdfComp";
 import baseUrl from "config";
+import { FaFilePdf } from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
 ).toString();
 
 const ResourceHub = () => {
@@ -16,8 +17,7 @@ const ResourceHub = () => {
   const [file, setFile] = useState("");
   const token = useSelector((state) => state.token);
   const [allFiles, setAllFiles] = useState([]);
-  const [pdfFile, setPdfFile]=useState(null)
-
+  const [pdfFile, setPdfFile] = useState(null);
 
   useEffect(() => {
     getPdf();
@@ -30,11 +30,9 @@ const ResourceHub = () => {
     const data = await res.json();
     setAllFiles(data.data);
   };
-  const ShowPdf=(pdf)=>{
-
-    setPdfFile(`${baseUrl}/assets/${pdf}`)
-
-  }
+  const ShowPdf = (pdf) => {
+    setPdfFile(`${baseUrl}/assets/${pdf}`);
+  };
   const submitImage = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -56,45 +54,85 @@ const ResourceHub = () => {
     }
   };
 
-  console.log(allFiles)
+  console.log(allFiles);
 
   return (
     <WidgetWrapper>
       <Typography>Preview and share study materials! </Typography>
-      <h1>Upload PDF:</h1>
-
       <form onSubmit={submitImage}>
-        <TextField
-          placeholder="Title"
-          required
-          label="Title"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="file"
-          id="fileInput"
-          required
-          accept="application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        <Button type="submit">Submit</Button>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="1rem"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <FaFilePdf size="40" />
+          <input
+            type="file"
+            id="fileInput"
+            required
+            accept="application/pdf"
+            onChange={(e) => setFile(e.target.files[0])}
+            style={{
+              marginLeft: "4rem",
+            }}
+          />
+          <Input
+            placeholder="Give your file a title"
+            required
+            label="Title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Button type="submit" variant="contained">
+            Submit
+          </Button>
+        </Box>
       </form>
+
       <Box>
-        <h4>Uploaded PDF:</h4>
-        <Box display="flex" gap="1rem">
-          {allFiles === null
-            ? ""
-            : allFiles.map((data) => (
-                <Box border="gray 1px solid" borderRadius="10px">
-                  <h6>{data.title}</h6>
-                  <Button variant="contained" onClick={()=>ShowPdf(data.pdf)}>Show Pdf</Button>
-                </Box>
-              ))}
+        <h4>Scroll to see all Uploaded materials:</h4>
+        <Box
+          display="flex"
+          gap="1rem"
+          style={{
+            overflowX: "scroll",
+          }}
+        >
+          {allFiles.length === 0 ? (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              width="100%"
+              color="primary.main"
+            >
+              No files uploaded!! 
+            </Box>
+          ) : (
+            allFiles.map((data) => (
+              <Box
+                border="gray 1px solid"
+                borderRadius="10px"
+                minWidth="150px"
+                p={"1rem"}
+                display="flex"
+                flexDirection="column"
+                justifyContent="space-between"
+              >
+                <h6>{data.title}</h6>
+                <Button variant="outlined" onClick={() => ShowPdf(data.pdf)}>
+                  Show Pdf
+                </Button>
+              </Box>
+            ))
+          )}
         </Box>
       </Box>
-      <PdfComp pdfFile={pdfFile}/>
+      <h2>Preview:</h2>
+      <PdfComp pdfFile={pdfFile} />
     </WidgetWrapper>
   );
 };

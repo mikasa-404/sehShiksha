@@ -35,12 +35,12 @@ function App() {
           >
             {/* Conditionally render UserWidget and SideWidget based on route and screen size */}
             {isAuth && (
-              <Box width={isNonMobileScreens ? "25%" : "100%"} ml="6rem">
+              <Box width={isNonMobileScreens ? "20%" : "100%"} ml="6rem">
                 <UserWidget />
               </Box>
             )}
 
-            <Box width={isNonMobileScreens ? "80%" : "100%"}>
+            <Box width={isNonMobileScreens ? "50%" : "100%"}>
               <Routes>
                 {/* Redirect to /home if authenticated */}
                 <Route
@@ -67,7 +67,7 @@ function App() {
             </Box>
 
             {isAuth && (
-              <Box display={isNonMobileScreens ? "block" : "none"} width="25%" mr="6rem">
+              <Box display={isNonMobileScreens ? "block" : "none"} width="20%" mr="6rem">
                 <SideWidget />
               </Box>
             )}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Document, Page } from "react-pdf";
-import pdf from "./1.pdf";
+import pdf from "./sample.pdf";
 import { Box } from "@mui/material";
 
 const PdfComp = (props) => {
@@ -30,7 +30,7 @@ const PdfComp = (props) => {
           Next
         </button>
       </Box>
-      <Document file={props.pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+      <Document file={props.pdfFile || pdf} onLoadSuccess={onDocumentLoadSuccess}>
         {/* Here should be your Page component */}
         <Page
           pageNumber={pageNumber}
