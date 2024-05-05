@@ -23,6 +23,6 @@ const PostSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+//likes are mapping userid to true if they liked
 const Post = mongoose.model("Post", PostSchema);
 export default Post;

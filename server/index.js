@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 app.use(cors({
   origin: ["https://seh-shiksha.vercel.app","http://localhost:3000"],
-  methods:['GET', 'POST', 'PATCH'],
+  methods:['GET', 'POST', 'PATCH','DELETE'],
   credentials: true,
 }));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
