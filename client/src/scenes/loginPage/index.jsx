@@ -52,8 +52,7 @@ const LoginPage = () => {
         justifyContent="center"
         alignItems="center"
         height="100vh"
-        backgroundColor={"white"}
-
+        backgroundColor="background.alt"
       >
         <Form />
       </Box>

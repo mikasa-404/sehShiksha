@@ -40,7 +40,9 @@ function App() {
               </Box>
             )}
 
-            <Box width={isNonMobileScreens ? "50%" : "100%"}>
+            <Box
+              width={isNonMobileScreens ? (isAuth ? "50%" : "100%") : "100%"}
+            >
               <Routes>
                 {/* Redirect to /home if authenticated */}
                 <Route
@@ -67,7 +69,11 @@ function App() {
             </Box>
 
             {isAuth && (
-              <Box display={isNonMobileScreens ? "block" : "none"} width="20%" mr="6rem">
+              <Box
+                display={isNonMobileScreens ? "block" : "none"}
+                width="20%"
+                mr="6rem"
+              >
                 <SideWidget />
               </Box>
             )}

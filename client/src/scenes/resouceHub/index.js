@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { pdfjs } from "react-pdf";
 import PdfComp from "./PdfComp";
 import baseUrl from "config";
-import { FaFilePdf } from "react-icons/fa";
+import { FaDownload, FaFilePdf } from "react-icons/fa";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -22,7 +22,15 @@ const ResourceHub = () => {
   useEffect(() => {
     getPdf();
   }, []);
-
+  const downloadPdf = (pdfUrl) => {
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.target = "_blank";
+    link.setAttribute("download", "file.pdf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   const getPdf = async () => {
     const res = await fetch(`${baseUrl}/get-files`, {
       method: "GET",
@@ -53,8 +61,6 @@ const ResourceHub = () => {
       getPdf();
     }
   };
-
-  console.log(allFiles);
 
   return (
     <WidgetWrapper>
@@ -92,14 +98,21 @@ const ResourceHub = () => {
         </Box>
       </form>
 
-      <Box>
-        <h4>Scroll to see all Uploaded materials:</h4>
+      <Box mt={"2rem"}>
         <Box
           display="flex"
           gap="1rem"
           style={{
             overflowX: "scroll",
+            scrollbarWidth: "thin", // Setting the width of the scrollbar
+            "-ms-overflow-style": "none", // Hiding scrollbar for IE and Edge
+            "scrollbar-color": "#ccc transparent", // Color of the scrollbar
+            "&::-webkit-scrollbar": {
+              width: "6px", // Width of the scrollbar for Webkit browsers (e.g., Chrome, Safari)
+            },
+           
           }}
+          p={"0.5rem"}
         >
           {allFiles.length === 0 ? (
             <Box
@@ -109,29 +122,37 @@ const ResourceHub = () => {
               width="100%"
               color="primary.main"
             >
-              No files uploaded!! 
+              No files uploaded!!
             </Box>
           ) : (
             allFiles.map((data) => (
               <Box
-                border="gray 1px solid"
                 borderRadius="10px"
-                minWidth="150px"
                 p={"1rem"}
                 display="flex"
                 flexDirection="column"
-                justifyContent="space-between"
+                justifyContent={"space-between"}
+                gap={"0.5rem"}
+                boxShadow={"0px 5px 5px #ccc"}
+                minWidth={"200px"}
               >
-                <h6>{data.title}</h6>
-                <Button variant="outlined" onClick={() => ShowPdf(data.pdf)}>
-                  Show Pdf
-                </Button>
+                <Typography fontWeight={500}>{data.title+".pdf"}</Typography>
+
+                 <Box display="flex" gap="0.5rem">
+                  <Button variant="outlined" onClick={() => ShowPdf(data.pdf)}>
+                    Show Pdf
+                  </Button>
+                  <Button variant="outlined" onClick={() => downloadPdf(`${baseUrl}/assets/${data.pdf}`)}>
+                    <FaDownload />
+                  </Button>
+                </Box>
               </Box>
             ))
           )}
         </Box>
       </Box>
       <h2>Preview:</h2>
+      <Typography>Click on show pdf to preview your pdf here!</Typography>
       <PdfComp pdfFile={pdfFile} />
     </WidgetWrapper>
   );
