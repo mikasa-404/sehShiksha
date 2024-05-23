@@ -61,7 +61,7 @@ const ResourceHub = () => {
       getPdf();
     }
   };
-
+  console.log(pdfFile)
   return (
     <WidgetWrapper>
       <Typography>Preview and share study materials! </Typography>
