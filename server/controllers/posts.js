@@ -54,9 +54,33 @@ export const deletePost = async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
-    await Post.deleteOne({_id: id});
+    await Post.deleteOne({ _id: id });
     return res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(404).json({ message: error.message });
+  }
+};
+export const editPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+    const { description } = req.body;
+    if (!description) {
+      return res.status(400).json({ message: "Description is required." });
+    }
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { description: description },
+      { new: true }
+    );
+    return res.status(200).json(updatedPost);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred while editing the post." });
   }
 };

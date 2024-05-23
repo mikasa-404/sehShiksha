@@ -4,8 +4,12 @@ import {
   Button,
   Menu,
   MenuItem,
-  Select,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
 import baseUrl from "config";
@@ -21,7 +25,7 @@ const Post = ({ post }) => {
     userPicturePath,
     firstName,
     lastName,
-    description,
+    description: originalDescription,
     picturePath,
     likes,
     _id,
@@ -31,25 +35,59 @@ const Post = ({ post }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editingDescription, setEditingDescription] = useState(false);
+  const [updatedDescription, setUpdatedDescription] = useState(originalDescription);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const patchLike = async () => {
-    const res = await fetch(`${baseUrl}/posts/${_id}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    const updatedPost = await res.json();
-    dispatch(setPost({ post: updatedPost }));
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+    handleClose(); // Close menu when dialog opens
   };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleEdit = () => {
+    setEditingDescription(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingDescription(false);
+    setUpdatedDescription(originalDescription); // Reset to original description
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/posts/${_id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ description: updatedDescription }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      }
+
+      const updatedPost = await response.json();
+      dispatch(setPost({ post: updatedPost }));
+      setEditingDescription(false);
+    } catch (error) {
+      console.error("Error updating post:", error.message);
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const response = await fetch(`${baseUrl}/posts/${_id}`, {
@@ -63,82 +101,102 @@ const Post = ({ post }) => {
         throw new Error("Failed to delete post");
       }
 
-      const deletedPostId = _id; // Assuming you have the _id of the post being deleted
+      const deletedPostId = _id;
       dispatch(deletePost({ postId: deletedPostId }));
+      handleCloseDialog(); // Close dialog after successful deletion
     } catch (error) {
       console.error("Error deleting post:", error.message);
     }
   };
-  //current user has liked or not
+
+  const patchLike = async () => {
+    const res = await fetch(`${baseUrl}/posts/${_id}/like`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
+    const updatedPost = await res.json();
+    dispatch(setPost({ post: updatedPost }));
+  };
+
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 
   return (
     <WidgetWrapper>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        flexDirection="column"
-        gap="1rem"
-      >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box display="flex" gap="0.5rem" alignItems="center">
-            <img
-              style={{ objectFit: "cover", borderRadius: "50%" }}
-              width={"30px"}
-              height={"30px"}
-              alt="user"
-              src={`${baseUrl}/assets/${userPicturePath}`}
-            />
-            <Box>
-              <Typography fontWeight="500">
-                {firstName + " " + lastName}
-              </Typography>
-            </Box>
-          </Box>
-          {loggedInUserId === userId && (
-            <>
-              <Button onClick={(e) => setAnchorEl(e.currentTarget)}>
-                <BsThreeDotsVertical />
-              </Button>
-
-              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuItem onClick={handleDelete}>Delete Post</MenuItem>
-                <MenuItem>Edit Post</MenuItem>
-              </Menu>
-            </>
-          )}
+    <Box display="flex" flexDirection="column" gap="1rem">
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex" alignItems="center" gap="0.5rem">
+          <img
+            style={{ objectFit: "cover", borderRadius: "50%", width: "30px", height: "30px" }}
+            alt="user"
+            src={`${baseUrl}/assets/${userPicturePath}`}
+          />
+          <Typography variant="subtitle1" fontWeight="bold">
+            {`${firstName} ${lastName}`}
+          </Typography>
         </Box>
-
-        <Typography>{description}</Typography>
+        {loggedInUserId === userId && (
+          <>
+            <IconButton onClick={handleClick}>
+              <BsThreeDotsVertical />
+            </IconButton>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+              <MenuItem onClick={handleOpenDialog}>Delete Post</MenuItem>
+              <MenuItem onClick={handleEdit}>Edit Post</MenuItem>
+            </Menu>
+          </>
+        )}
+      </Box>
+      {editingDescription ? (
+        <Box display="flex" flexDirection="column"  width="100%" gap="1rem">
+          <TextField
+            multiline
+            rows={2}
+            variant="outlined"
+            value={updatedDescription}
+            onChange={(e) => setUpdatedDescription(e.target.value)}
+          />
+          <Box display="flex" gap="10px">
+            <Button onClick={handleCancelEdit}>Cancel</Button>
+            <Button onClick={handleSaveEdit} variant="contained" color="primary">Save</Button>
+          </Box>
+        </Box>
+      ) : (
+        <Typography variant="body1">{originalDescription}</Typography>
+      )}
+        {/* <Typography variant="body1">{description}</Typography> */}
         {picturePath && (
-          <Box width="100%" display="flex" alignItems="center">
+          <Box width="100%" display="flex" justifyContent="center">
             <img
-              style={{ objectFit: "cover", borderRadius: "0.75rem" }}
+              style={{ objectFit: "cover", borderRadius: "0.75rem", maxWidth: "100%" }}
               alt="post"
-              width="100%"
-              height="auto"
               src={`${baseUrl}/assets/${picturePath}`}
             />
           </Box>
         )}
-        <Box width="100%" display="flex" gap="5px" alignItems="center">
+        <Box display="flex" alignItems="center" gap="5px">
           <IconButton onClick={patchLike}>
-            {isLiked ? (
-              <>
-                <FcLike size={16} />
-              </>
-            ) : (
-              <>
-                <FcLikePlaceholder size={16} />
-              </>
-            )}
+            {isLiked ? <FcLike size={16} /> : <FcLikePlaceholder size={16} />}
           </IconButton>
-          <Typography color="primary.main" fontWeight="500">
-            {likeCount}
+          <Typography variant="body2" color="textSecondary">
+            {likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
           </Typography>
         </Box>
       </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Delete Post</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this post?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+          <Button onClick={handleDelete} color="primary" autoFocus>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </WidgetWrapper>
   );
 };
