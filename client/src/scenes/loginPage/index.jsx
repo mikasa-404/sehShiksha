@@ -47,7 +47,7 @@ const LoginPage = () => {
         </Box>
       )}
       <Box
-        width={isNonMobileScreens ? "60%" : "90%"}
+        width={isNonMobileScreens ? "60%" : "100%"}
         display="flex"
         justifyContent="center"
         alignItems="center"
