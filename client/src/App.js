@@ -32,10 +32,14 @@ function App() {
             justifyContent={"center"}
             gap={"1.5rem"}
             width="100%"
+            padding={isNonMobileScreens ? "0" : "2rem"}
           >
             {/* Conditionally render UserWidget and SideWidget based on route and screen size */}
             {isAuth && (
-              <Box width={isNonMobileScreens ? "20%" : "100%"} ml="6rem">
+              <Box
+                width={isNonMobileScreens ? "20%" : "100%"}
+                ml={isNonMobileScreens ? "6rem" : "0"}
+              >
                 <UserWidget />
               </Box>
             )}

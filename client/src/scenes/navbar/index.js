@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -10,19 +10,19 @@ import { SiStudyverse } from "react-icons/si";
 const Navbar = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
+  const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
 
   const alt = theme.palette.background.alt;
   return (
     <Box
-      padding="0.5rem 8rem"
+      padding={isNonMobileScreens?"0.5rem 8rem":"0.5rem 2rem"}
       backgroundColor={alt}
       display="flex"
       mb="1.5rem"
       justifyContent="space-between"
       sx={{
         boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)"
-        
-
+  
       }}
     
     >

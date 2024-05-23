@@ -12,14 +12,14 @@ const PdfComp = (props) => {
   };
 
   return (
-    <Box p="10px" border="1px solid " mt="1rem" bgcolor="primary.light" display="flex" alignItems="center" flexDirection="column">
-      <Box display="flex" justifyContent="center">
+    <Box p="10px" border="1px solid " mt="1rem" bgcolor="primary.light" display="flex" alignItems="center" flexDirection="column" width="100%">
+      <Box display="flex" justifyContent="center" mb="1rem" gap="0.5rem">
         <button
           onClick={() => {
             if (pageNumber > 1) setPageNumber(pageNumber - 1);
           }}
         >
-          prev
+          Prev
         </button>
         Page {pageNumber} of {numPages}
         <button
@@ -30,7 +30,7 @@ const PdfComp = (props) => {
           Next
         </button>
       </Box>
-      <Document file={props.pdfFile || pdf} onLoadSuccess={onDocumentLoadSuccess}>
+      <Document file={props.pdfFile || pdf} onLoadSuccess={onDocumentLoadSuccess}  >
         {/* Here should be your Page component */}
         <Page
           pageNumber={pageNumber}

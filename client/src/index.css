@@ -8,3 +8,7 @@ body,
   width: 100%;
   font-family: "Rubik", sans-serif;
 }
+.react-pdf__Page__canvas{
+    width: 100% !important;
+    height: auto !important;
+}

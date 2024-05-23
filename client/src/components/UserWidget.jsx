@@ -1,26 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import WidgetWrapper from "./WidgetWrapper";
 import { useSelector } from "react-redux";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import baseUrl from "config";
+import { styled } from "@mui/system";
+
+const StyledLink = styled(Link)(({ theme, isSelected }) => ({
+  textDecoration: "none",
+  color: "inherit",
+  transform: "scale(1)",
+  transition: "transform 0.3s ease",
+  "&:hover": {
+    transform: "scale(1.05)",
+  },
+  "& .MuiTypography-root": {
+    fontWeight: isSelected ? "600" : "400",
+  },
+}));
 
 const UserWidget = () => {
   const { firstName, lastName, email, picturePath, department } = useSelector(
     (state) => state.user
   );
   const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
+  const location = useLocation();
 
   return (
-    <WidgetWrapper
-      height="fit-content"
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap="1.2rem"
-        alignItems="center"
-      >
+    <WidgetWrapper height="fit-content">
+      <Box display="flex" flexDirection="column" gap="1.2rem" alignItems="center">
         <Box
           width="100%"
           display="flex"
@@ -73,21 +81,17 @@ const UserWidget = () => {
           gap="0.5rem"
           pb="1.2rem"
         >
-          <Link to="/home" style={{ textDecoration: "none", color: "inherit" }}>
+          <StyledLink to="/home" isSelected={location.pathname === "/home"}>
             <Typography
               variant="h4"
               borderBottom="2px solid"
               borderColor={"primary.dark"}
-              fontWeight={"500"}
               fontSize="1.2em"
             >
               Home
             </Typography>
-          </Link>
-          <Link
-            to="/resources"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+          </StyledLink>
+          <StyledLink to="/resources" isSelected={location.pathname === "/resources"}>
             <Typography
               variant="h4"
               borderBottom="2px solid"
@@ -96,11 +100,8 @@ const UserWidget = () => {
             >
               Resource Hub
             </Typography>
-          </Link>
-          <Link
-            to="/forum"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
+          </StyledLink>
+          <StyledLink to="/forum" isSelected={location.pathname === "/forum"}>
             <Typography
               variant="h4"
               borderBottom="2px solid"
@@ -109,8 +110,8 @@ const UserWidget = () => {
             >
               Community Forum
             </Typography>
-          </Link>
-          <Link to="" style={{ textDecoration: "none", color: "inherit" }}>
+          </StyledLink>
+          <StyledLink to="/contact" isSelected={location.pathname === "/contact"}>
             <Typography
               variant="h4"
               borderBottom="2px solid"
@@ -119,7 +120,7 @@ const UserWidget = () => {
             >
               Contact Us
             </Typography>
-          </Link>
+          </StyledLink>
         </Box>
       </Box>
     </WidgetWrapper>
