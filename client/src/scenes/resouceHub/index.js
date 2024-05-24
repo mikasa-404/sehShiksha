@@ -2,15 +2,12 @@ import { Box, Button, Input, TextField, Typography } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { pdfjs } from "react-pdf";
 import PdfComp from "./PdfComp";
 import baseUrl from "config";
 import { FaDownload, FaFilePdf } from "react-icons/fa";
+import { pdfjs } from 'react-pdf'
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
 const ResourceHub = () => {
   const [title, setTitle] = useState("");
@@ -61,7 +58,7 @@ const ResourceHub = () => {
       getPdf();
     }
   };
-  console.log(pdfFile)
+  console.log(pdfFile);
   return (
     <WidgetWrapper>
       <Typography>Preview and share study materials! </Typography>
@@ -110,7 +107,6 @@ const ResourceHub = () => {
             "&::-webkit-scrollbar": {
               width: "6px", // Width of the scrollbar for Webkit browsers (e.g., Chrome, Safari)
             },
-           
           }}
           p={"0.5rem"}
         >
@@ -136,13 +132,16 @@ const ResourceHub = () => {
                 boxShadow={"0px 5px 5px #ccc"}
                 minWidth={"200px"}
               >
-                <Typography fontWeight={500}>{data.title+".pdf"}</Typography>
+                <Typography fontWeight={500}>{data.title + ".pdf"}</Typography>
 
-                 <Box display="flex" gap="0.5rem">
+                <Box display="flex" gap="0.5rem">
                   <Button variant="outlined" onClick={() => ShowPdf(data.pdf)}>
                     Show Pdf
                   </Button>
-                  <Button variant="outlined" onClick={() => downloadPdf(`${baseUrl}/assets/${data.pdf}`)}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => downloadPdf(`${baseUrl}/assets/${data.pdf}`)}
+                  >
                     <FaDownload />
                   </Button>
                 </Box>
