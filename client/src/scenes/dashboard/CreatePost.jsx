@@ -23,7 +23,7 @@ import Picker from "emoji-picker-react";
 import baseUrl from "config";
 
 const CreatePost = () => {
-  const { _id, picturePath } = useSelector((state) => state.user); 
+  const { _id, picturePath } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
@@ -125,9 +125,9 @@ const CreatePost = () => {
             cursor: "pointer",
             textAlign: "center",
             transition: "background-color 0.3s ease",
-            backgroundColor: "#fafafa",
+            backgroundColor: "backgroundColor.alt",
             "&:hover": {
-              backgroundColor: "#f0f0f0",
+              backgroundColor: "neutral.light",
             },
           }}
           mt="1rem"
@@ -189,16 +189,23 @@ const CreatePost = () => {
               <GrGallery />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Add Emoji">
-            <IconButton onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-              <EmojiEmotionsOutlined />
-            </IconButton>
-          </Tooltip>
-          {showEmojiPicker && (
-            <Box ref={emojiPickerRef} position="absolute" zIndex="tooltip">
-              <Picker onEmojiClick={(e) => setDes((des) => des + e.emoji)} />
-            </Box>
-          )}
+          <Box sx={{ position: "relative" }}>
+            <Tooltip title="Add Emoji">
+              <IconButton onClick={() => setShowEmojiPicker(true)}>
+                <EmojiEmotionsOutlined />
+              </IconButton>
+            </Tooltip>
+            {showEmojiPicker && (
+              <Box ref={emojiPickerRef} position="absolute" zIndex="tooltip">
+                <Picker
+                  onEmojiClick={(e) => {
+                    setDes((des) => des + e.emoji);
+                    setShowEmojiPicker(false);
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
         </Box>
         <Button
           disabled={!des}

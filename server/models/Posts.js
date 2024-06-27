@@ -20,6 +20,10 @@ const PostSchema = new mongoose.Schema(
       type: Map,
       of: Boolean,
     },
+    downvotes: {
+      type: Map,
+      of: Boolean,
+    },
   },
   { timestamps: true }
 );

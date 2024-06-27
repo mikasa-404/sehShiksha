@@ -2,9 +2,11 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import Form from "./Form";
 import heroImage from "../../Images/2345130-removebg-preview.png";
+import { useSelector } from "react-redux";
 
 const LoginPage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:600px)");
+  const mode= useSelector((state)=>state.mode)
 
   return (
     <Box
@@ -20,7 +22,7 @@ const LoginPage = () => {
           justifyContent="center"
           flexDirection="column"
           alignItems="center"
-          backgroundColor={"primary.light"}
+          backgroundColor={mode==='light'?"primary.light":"neutral.light"}
           height="100vh"
         >
           <img width="50%" src={heroImage} alt="" />
