@@ -2,6 +2,8 @@
 
 Sehshiksha is a full-stack web application designed to empower college students by fostering collaboration and knowledge sharing.
 
+![Home page](./client/public/screenshots/Home%20page%20light.png)
+
 ## 🔗 Live link
 
 **[https://seh-shiksha.vercel.app/](https://seh-shiksha.vercel.app/)**
