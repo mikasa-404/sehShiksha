@@ -33,25 +33,40 @@ const CreatePost = () => {
   const emojiPickerRef = useRef(null);
 
   const handlePost = async () => {
-    const formData = new FormData();
-    formData.append("userId", _id);
-    formData.append("description", des);
-    if (image) {
-      formData.append("picturePath", image.name);
-    }
     const res = await fetch(`${baseUrl}/posts`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify({
+        userId: _id,
+        description: des,
+        picturePath: image ? image.name : null,
+        type: image ? image.type : null,
+      }),
     });
 
     if (!res.ok) {
       const errData = await res.json();
       console.log("error", errData);
     }
-    const posts = await res.json();
+    const { posts, preSignerUrl } = await res.json();
+    console.log(preSignerUrl);
+    if (image) {
+      const uploadResponse = await fetch(preSignerUrl, {
+        method: "PUT",
+        body: image,
+        headers: {
+          "Content-Type": image.type,
+        },
+      });
+
+      if (!uploadResponse.ok) {
+        console.log("Upload error");
+        return;
+      }
+    }
     dispatch(setPosts({ posts }));
     setImage(null);
     setDes("");

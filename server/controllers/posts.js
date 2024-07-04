@@ -2,36 +2,44 @@ import Post from "../models/Posts.js";
 import User from "../models/User.js";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { v4 as uuidv4 } from "uuid";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const s3 = new S3Client({
-  region: "ap-south-1",
+  region: process.env.AWS_REGION,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
+async function putObject(filename, contentType) {
+  const uniqueFilename = `${uuidv4()}-${filename}`;
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `posts/${uniqueFilename}`,
+    ContentType: contentType,
+  });
+  const url = await getSignedUrl(s3, command);
+  return { url, uniqueFilename };
+}
 
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
-
+    const { userId, description, picturePath, type } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
     let preSignerUrl = null;
     let postPicturePath = null;
-    if (picturePath) {
-      //genrate presigned url
-      const command = new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `posts/${picturePath}`, //somethong like posts/image.png
-        ContentType: "image/png, image/jpeg, image/gif",
-      });
-      preSignerUrl = await getSignedUrl(S3Client, command);
-      postPicturePath = `posts/${picturePath}`;
-    }
 
+    if (picturePath) {
+      const { url, uniqueFilename } = await putObject(picturePath, type);
+      preSignerUrl = url;
+      postPicturePath = uniqueFilename;
+    }
     const newPost = new Post({
       userId,
       firstName: user.firstName,
@@ -43,9 +51,9 @@ export const createPost = async (req, res) => {
       downvotes: {},
     });
     await newPost.save();
-    const post = await Post.find().sort({ createdAt: -1 });
+    const posts = await Post.find().sort({ createdAt: -1 });
     return res.status(201).json({
-      post,
+      posts,
       preSignerUrl,
     });
   } catch (error) {

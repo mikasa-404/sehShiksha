@@ -38,7 +38,6 @@ const Post = ({ post }) => {
     userId,
   } = post;
   const loggedInUserId = useSelector((state) => state.user._id);
-  console.log(downvotes);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const [anchorEl, setAnchorEl] = useState(null);

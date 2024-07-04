@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const register = async (req, res) => {
   try {
@@ -13,7 +15,8 @@ export const register = async (req, res) => {
       return res.status(400).json({ email: "Email already exists" });
     } else {
       //hash password
-      if(!password) return res.status(400).json({ message: "Password required" });
+      if (!password)
+        return res.status(400).json({ message: "Password required" });
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(password, salt);
 

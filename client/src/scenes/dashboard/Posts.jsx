@@ -41,7 +41,6 @@ const Posts = () => {
   return (
     <>
       {posts.map((post) => {
-        console.log(post);
         return(
         <Box key={post._id}> {/* Ensure each child in a list has a unique "key" prop */}
           <Post post={post} />
