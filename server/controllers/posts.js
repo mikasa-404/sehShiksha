@@ -1,6 +1,10 @@
 import Post from "../models/Posts.js";
 import User from "../models/User.js";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
 
@@ -24,6 +28,24 @@ async function putObject(filename, contentType) {
   const url = await getSignedUrl(s3, command);
   return { url, uniqueFilename };
 }
+async function getObject(key) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `posts/${key}`,
+  });
+  const url = await getSignedUrl(s3, command);
+  return url;
+}
+export const getPostImage = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    console.log(filename);
+    const url = await getObject(filename);
+    return res.status(200).json({ url });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
 
 export const createPost = async (req, res) => {
   try {
