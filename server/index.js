@@ -55,7 +55,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 //user route
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 app.post("/upload-files", upload.single("file"), async (req, res) => {
   const title = req.body.title;

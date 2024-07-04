@@ -1,22 +1,83 @@
 import Post from "../models/Posts.js";
 import User from "../models/User.js";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { v4 as uuidv4 } from "uuid";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+async function putObject(filename, contentType) {
+  const uniqueFilename = `${uuidv4()}-${filename}`;
+  const command = new PutObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `posts/${uniqueFilename}`,
+    ContentType: contentType,
+  });
+  const url = await getSignedUrl(s3, command);
+  return { url, uniqueFilename };
+}
+async function getObject(key) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `posts/${key}`,
+  });
+  const url = await getSignedUrl(s3, command);
+  return url;
+}
+export const getPostImage = async (req, res) => {
+  try {
+    const { filename } = req.params;
+    console.log(filename);
+    const url = await getObject(filename);
+    return res.status(200).json({ url });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
+    const { userId, description, picturePath, type } = req.body;
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    let preSignerUrl = null;
+    let postPicturePath = null;
+
+    if (picturePath) {
+      const { url, uniqueFilename } = await putObject(picturePath, type);
+      preSignerUrl = url;
+      postPicturePath = uniqueFilename;
+    }
     const newPost = new Post({
       userId,
       firstName: user.firstName,
       lastName: user.lastName,
       userPicturePath: user.picturePath,
       description,
-      picturePath,
+      picturePath: postPicturePath,
       likes: {},
       downvotes: {},
     });
     await newPost.save();
-    const post = await Post.find().sort({ createdAt: -1 });
-    return res.status(201).json(post);
+    const posts = await Post.find().sort({ createdAt: -1 });
+    return res.status(201).json({
+      posts,
+      preSignerUrl,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

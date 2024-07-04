@@ -25,12 +25,11 @@ const Posts = () => {
       }
     };
 
-    if (!posts.length) { // Check if posts is empty or undefined
-      getPosts(); // Fetch posts if they haven't been fetched yet
-    }
-  }, [dispatch, posts.length, token]); // Include dispatch, posts.length, and token in dependencies array
+    getPosts(); // Fetch posts if they haven't been fetched yet
+  }, []); // Include dispatch, posts.length, and token in dependencies array
 
-  if (!posts || !posts.length) { // Render loading spinner if posts are not yet available
+  if (!posts || !posts.length) {
+    // Render loading spinner if posts are not yet available
     return (
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <CircularProgress />
@@ -41,12 +40,14 @@ const Posts = () => {
   return (
     <>
       {posts.map((post) => {
-        console.log(post);
-        return(
-        <Box key={post._id}> {/* Ensure each child in a list has a unique "key" prop */}
-          <Post post={post} />
-        </Box>
-      )})}
+        return (
+          <Box key={post._id}>
+            {" "}
+            {/* Ensure each child in a list has a unique "key" prop */}
+            <Post post={post} />
+          </Box>
+        );
+      })}
     </>
   );
 };

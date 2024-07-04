@@ -14,10 +14,10 @@ import {
 } from "@mui/material";
 import WidgetWrapper from "components/WidgetWrapper";
 import baseUrl from "config";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost, setPost, setPosts } from "state/authSlice";
+import { deletePost, setPost } from "state/authSlice";
 import {
   BiDownvote,
   BiSolidUpvote,
@@ -38,7 +38,6 @@ const Post = ({ post }) => {
     userId,
   } = post;
   const loggedInUserId = useSelector((state) => state.user._id);
-  console.log(downvotes);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -116,7 +115,21 @@ const Post = ({ post }) => {
       console.error("Error deleting post:", error.message);
     }
   };
-
+  const [imageUrl, setImageUrl] = useState(null);
+  const getImageUrl = async (filename) => {
+    try {
+      const response = await fetch(`${baseUrl}/posts/image/${filename}`); // Endpoint to fetch image
+      const res = await response.json();
+      setImageUrl(res.url);
+    } catch (error) {
+      console.error("Error fetching image:", error);
+    }
+  };
+  useEffect(() => {
+    if (picturePath) {
+      getImageUrl(picturePath);
+    }
+  }, [picturePath]);
   const patchLike = async () => {
     const res = await fetch(`${baseUrl}/posts/${_id}/like`, {
       method: "PATCH",
@@ -146,7 +159,7 @@ const Post = ({ post }) => {
   const likeCount = Object.keys(likes).length;
 
   const isDownVoted = Boolean(downvotes[loggedInUserId]);
-  // console.log(downVotes);
+
   const downCount = Object.keys(downvotes).length;
 
   return (
@@ -211,7 +224,7 @@ const Post = ({ post }) => {
                 maxWidth: "100%",
               }}
               alt="post"
-              src={`${baseUrl}/assets/${picturePath}`}
+              src={imageUrl}
             />
           </Box>
         )}
