@@ -14,18 +14,23 @@ const s3 = new S3Client({
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
-    if (!picturePath) {
-      return res.status(400).json({ error: "Picture name is required" });
-    }
-    const user = await User.findById(userId);
 
-    //genrate presigned url
-    const command = new PutObjectCommand({
-      Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `posts/${picturePath}`, //somethong like posts/image.png
-      ContentType: "image/png, image/jpeg, image/gif",
-    });
-    const preSignerUrl = await getSignedUrl(S3Client, command);
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    let preSignerUrl = null;
+    let postPicturePath = null;
+    if (picturePath) {
+      //genrate presigned url
+      const command = new PutObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: `posts/${picturePath}`, //somethong like posts/image.png
+        ContentType: "image/png, image/jpeg, image/gif",
+      });
+      preSignerUrl = await getSignedUrl(S3Client, command);
+      postPicturePath = `posts/${picturePath}`;
+    }
 
     const newPost = new Post({
       userId,
@@ -33,7 +38,7 @@ export const createPost = async (req, res) => {
       lastName: user.lastName,
       userPicturePath: user.picturePath,
       description,
-      picturePath: `posts/${picturePath}`,
+      picturePath: postPicturePath,
       likes: {},
       downvotes: {},
     });
