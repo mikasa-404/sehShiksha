@@ -37,7 +37,6 @@ const CreatePost = () => {
     formData.append("userId", _id);
     formData.append("description", des);
     if (image) {
-      formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
     const res = await fetch(`${baseUrl}/posts`, {

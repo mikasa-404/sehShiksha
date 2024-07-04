@@ -1,22 +1,48 @@
 import Post from "../models/Posts.js";
 import User from "../models/User.js";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const s3 = new S3Client({
+  region: "ap-south-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
+    if (!picturePath) {
+      return res.status(400).json({ error: "Picture name is required" });
+    }
     const user = await User.findById(userId);
+
+    //genrate presigned url
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `posts/${picturePath}`, //somethong like posts/image.png
+      ContentType: "image/png, image/jpeg, image/gif",
+    });
+    const preSignerUrl = await getSignedUrl(S3Client, command);
+
     const newPost = new Post({
       userId,
       firstName: user.firstName,
       lastName: user.lastName,
       userPicturePath: user.picturePath,
       description,
-      picturePath,
+      picturePath: `posts/${picturePath}`,
       likes: {},
       downvotes: {},
     });
     await newPost.save();
     const post = await Post.find().sort({ createdAt: -1 });
-    return res.status(201).json(post);
+    return res.status(201).json({
+      post,
+      preSignerUrl,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
