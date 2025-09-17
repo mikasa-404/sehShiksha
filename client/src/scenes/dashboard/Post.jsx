@@ -17,7 +17,7 @@ import baseUrl from "config";
 import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost, setPost } from "state/authSlice";
+import { deletePost, setPost } from "state/postsSlice";
 import {
   BiDownvote,
   BiSolidUpvote,
@@ -37,9 +37,9 @@ const Post = ({ post }) => {
     _id,
     userId,
   } = post;
-  const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserId = useSelector((state) => state.auth.user._id);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.auth.token);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingDescription, setEditingDescription] = useState(false);

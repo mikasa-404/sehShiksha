@@ -11,7 +11,7 @@ import SideWidget from "../../components/SideWidget";
 
 const Dashboard = () => {
   const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <Box display="flex" flexDirection="column" gap="1.5rem">

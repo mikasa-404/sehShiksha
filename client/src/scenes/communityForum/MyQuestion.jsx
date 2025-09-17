@@ -6,7 +6,7 @@ import { setQuestions } from "state/authSlice";
 import baseUrl from "config";
 
 const MyQuestion = () => {
-  const { _id } = useSelector((state) => state.user);
+  const { _id } = useSelector((state) => state.auth.user);
   console.log(baseUrl)
   const [title, setTitle] = useState("");
   const [des, setDes] = useState("");

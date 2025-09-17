@@ -12,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pd
 const ResourceHub = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState("");
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.auth.token);
   const [allFiles, setAllFiles] = useState([]);
   const [pdfFile, setPdfFile] = useState(null);
 

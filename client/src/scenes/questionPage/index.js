@@ -8,7 +8,7 @@ import baseUrl from "config";
 
 const QuestionPage = () => {
   const [questionInfo, setQuestionInfo] = useState(null);
-  const { _id } = useSelector((state) => state.user);
+  const { _id } = useSelector((state) => state.auth.user);
   const { quesId } = useParams();
   const [reply, setReply] = useState("");
   const [replies, setReplies] = useState([]);

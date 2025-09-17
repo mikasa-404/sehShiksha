@@ -10,7 +10,6 @@ import {
   Tooltip,
   Avatar,
 } from "@mui/material";
-import { setPosts } from "state/authSlice.js";
 import Dropzone from "react-dropzone";
 import {
   DeleteOutlined,
@@ -21,10 +20,11 @@ import {
 import { GrGallery } from "react-icons/gr";
 import Picker from "emoji-picker-react";
 import baseUrl from "config";
+import { setPosts } from "state/postsSlice";
 
 const CreatePost = () => {
-  const { _id, picturePath } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
+  const { _id, picturePath } = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [des, setDes] = useState("");

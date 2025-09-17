@@ -23,7 +23,7 @@ const Reply = ({ reply }) => {
   } = reply;
   const [isReplies, setIsReplies] = useState(false);
   const [nesReply, setNesReply] = useState("");
-  const userId = useSelector((state) => state.user._id);
+  const userId = useSelector((state) => state.auth.user._id);
   const [replies, setReplies] = useState([]);
 
   const currentTime = new Date();

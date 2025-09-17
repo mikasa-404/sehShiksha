@@ -32,7 +32,7 @@ const Navbar = () => {
   const theme = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
   const location = useLocation();
-  const { firstName, lastName, picturePath } = useSelector((state) => state.user);
+  const { firstName, lastName, picturePath } = useSelector((state) => state.auth.user);
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
