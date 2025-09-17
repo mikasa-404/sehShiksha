@@ -26,7 +26,7 @@ const Posts = () => {
     };
 
     getPosts(); // Fetch posts if they haven't been fetched yet
-  }, []); // Include dispatch, posts.length, and token in dependencies array
+  }, []); 
 
   if (!posts || !posts.length) {
     // Render loading spinner if posts are not yet available

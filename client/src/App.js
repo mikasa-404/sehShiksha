@@ -35,14 +35,14 @@ function App() {
             padding={isNonMobileScreens ? "0" : "2rem"}
           >
             {/* Conditionally render UserWidget and SideWidget based on route and screen size */}
-            {isAuth && (
+            {/* {isAuth && (
               <Box
                 width={isNonMobileScreens ? "20%" : "100%"}
                 ml={isNonMobileScreens ? "6rem" : "0"}
               >
                 <UserWidget />
               </Box>
-            )}
+            )} */}
 
             <Box
               width={isNonMobileScreens ? (isAuth ? "50%" : "100%") : "100%"}
