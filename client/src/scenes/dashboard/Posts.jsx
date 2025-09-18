@@ -28,7 +28,7 @@ const Posts = () => {
     };
 
     getPosts();
-  }, [posts, token, dispatch]); 
+  }, [token, dispatch]); 
 
   if (!Array.isArray(posts) || posts.length === 0) {
     // Render loading spinner if posts are not yet available
