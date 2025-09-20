@@ -1,6 +1,7 @@
 import Post from "../models/Posts.js";
 import User from "../models/User.js";
 import { generateUploadUrl, generateDownloadUrl } from "../services/aws/s3Service.js";
+import notificationService from "../services/notificationService.js";
 export const getPostImage = async (req, res) => {
   try {
     const { filename } = req.params;
@@ -38,6 +39,14 @@ export const createPost = async (req, res) => {
       downvotes: {},
     });
     await newPost.save();
+
+    //send notification to the users
+    try {
+      await notificationService.handlePostEvent(newPost._id, userId, 'NEW_POST', {});
+    } catch (error) {
+      console.error(`Error sending notification to the users: ${error.message}`);
+      // Don't fail the main operation if notification fails
+    }
     const posts = await Post.find().sort({ createdAt: -1 });
     return res.status(201).json({
       posts,
