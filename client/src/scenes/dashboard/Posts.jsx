@@ -1,15 +1,17 @@
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state/authSlice.js";
+import { setPosts } from "state/postsSlice";
 import { Box } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Post from "./Post";
 import baseUrl from "config";
 
 const Posts = () => {
-  const posts = useSelector((state) => state.posts);
-  const token = useSelector((state) => state.token);
+  const posts = useSelector((state) => state.posts?.posts || []);
+  const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     const getPosts = async () => {
@@ -25,10 +27,10 @@ const Posts = () => {
       }
     };
 
-    getPosts(); // Fetch posts if they haven't been fetched yet
-  }, []); // Include dispatch, posts.length, and token in dependencies array
+    getPosts();
+  }, [token, dispatch]); 
 
-  if (!posts || !posts.length) {
+  if (!Array.isArray(posts) || posts.length === 0) {
     // Render loading spinner if posts are not yet available
     return (
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -53,3 +55,4 @@ const Posts = () => {
 };
 
 export default Posts;
+

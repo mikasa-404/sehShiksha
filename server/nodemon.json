@@ -1,0 +1,21 @@
+{
+  "watch": [
+    "."
+  ],
+  "ignore": [
+    "node_modules/**/*",
+    "public/**/*",
+    "*.log",
+    "*.tmp",
+    "*~",
+    ".git/**/*",
+    "coverage/**/*",
+    "*.test.js",
+    "*.spec.js"
+  ],
+  "ext": "js,json",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 2500
+}

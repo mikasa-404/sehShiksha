@@ -15,9 +15,9 @@ import SideWidget from "components/SideWidget";
 import ResourceHub from "scenes/resouceHub";
 
 function App() {
-  const mode = useSelector((state) => state.mode);
+  const mode = useSelector((state) => state.auth.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
   const isNonMobileScreens = useMediaQuery("(min-width: 900px)");
 
   return (
@@ -35,14 +35,14 @@ function App() {
             padding={isNonMobileScreens ? "0" : "2rem"}
           >
             {/* Conditionally render UserWidget and SideWidget based on route and screen size */}
-            {isAuth && (
+            {/* {isAuth && (
               <Box
                 width={isNonMobileScreens ? "20%" : "100%"}
                 ml={isNonMobileScreens ? "6rem" : "0"}
               >
                 <UserWidget />
               </Box>
-            )}
+            )} */}
 
             <Box
               width={isNonMobileScreens ? (isAuth ? "50%" : "100%") : "100%"}

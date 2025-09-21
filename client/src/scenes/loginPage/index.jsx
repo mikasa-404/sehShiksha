@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const LoginPage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:600px)");
-  const mode= useSelector((state)=>state.mode)
+  const mode= useSelector((state)=>state.auth.mode)
 
   return (
     <Box
