@@ -11,6 +11,11 @@ export const NavbarContainer = styled(Box)(({ theme, isNonMobileScreens }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)",
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 1000,
 }));
 
 // Logo section
