@@ -15,6 +15,7 @@ import PdfDetails from "./models/PdfDetails.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/posts.js";
 import forumRoutes from "./routes/forum.js";
+import backgroundServiceManager from "./services/backgroundServiceManager.js";
 
 //configurations
 const __filename = fileURLToPath(import.meta.url);
@@ -86,7 +87,15 @@ app.use("/forum", forumRoutes);
 const PORT = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => {
+  .then(async () => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    
+    // Start background services after server is running
+    try {
+      await backgroundServiceManager.start();
+      console.log('✅ Background services started successfully');
+    } catch (error) {
+      console.error('❌ Failed to start background services:', error);
+    }
   })
   .catch((error) => console.log(`${error} did not connect`));
